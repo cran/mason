@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Luke W. Johnston" />
+
+<meta name="date" content="2016-07-15" />
+
+<title>Introduction to mason</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Introduction to mason</h1>
+<h4 class="author"><em>Luke W. Johnston</em></h4>
+<h4 class="date"><em>2016-07-15</em></h4>
+
+
+
+<blockquote>
+<p><strong>Brief note</strong>: I created this package to make my analyses easier. So some statistics that have been implemented were chosen because that’s what I’ve done. If you would like a particular statistical method included, please fill out an <a href="https://github.com/lwjohnst86/mason/issues">Issue</a> and I will try to implement it!</p>
+</blockquote>
+<p>Most analyses follow a similar pattern to how construction/engineering projects are developed: design -&gt; add specifications -&gt; construction -&gt; (optional) add to the design and specs -&gt; cleaning, scrubbing, and polishing. The <code>mason</code> package tries to emulate this process to make it easier to do analyses in a consistent and ‘tidy’ format.</p>
+<div id="basic-command-flow" class="section level2">
+<h2>Basic command flow</h2>
+<p>The general command flow for using <code>mason</code> is:</p>
+<ol style="list-style-type: decimal">
+<li>Start the design of a blueprint for the analysis by specifying which statistical technique to use in your analysis (<code>design()</code>).</li>
+<li>Add settings/options to the blueprint for the methods of the statistics (<code>add_settings()</code>).</li>
+<li>Add the variables you want to run the statistics on (<code>add_variables()</code>). These variables include the <span class="math inline">\(y\)</span> variables (outcomes), the <span class="math inline">\(x\)</span> variables (predictors), covariates, and interaction variables.</li>
+<li>Using the blueprint, construct the ‘mason project’ (stats analysis) so that the results are generated (<code>construct()</code>).</li>
+<li>Sometimes analyses are too big for one first pass, from blueprint to construction, and needs to add more to the blueprint. Use <code>add_variables()</code> or <code>add_settings()</code> after the <code>construct()</code> to add to the existing results.</li>
+<li>When you are ready, make the ‘mason project’ cleaned up by scrubbing it down and polishing it up (<code>scrub()</code> and <code>polish_*()</code> commands). The results are now ready for further presentation in a figure or table!</li>
+</ol>
+<div id="example-usage" class="section level3">
+<h3>Example usage</h3>
+<p>Let’s go over an example analysis. We’ll use <code>glm</code> for a simple linear regression. Let’s use the built-in <code>swiss</code> dataset. A quick peek at it shows:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(swiss)
+<span class="co">#&gt;              Fertility Agriculture Examination Education Catholic</span>
+<span class="co">#&gt; Courtelary        80.2        17.0          15        12     9.96</span>
+<span class="co">#&gt; Delemont          83.1        45.1           6         9    84.84</span>
+<span class="co">#&gt; Franches-Mnt      92.5        39.7           5         5    93.40</span>
+<span class="co">#&gt; Moutier           85.8        36.5          12         7    33.77</span>
+<span class="co">#&gt; Neuveville        76.9        43.5          17        15     5.16</span>
+<span class="co">#&gt; Porrentruy        76.1        35.3           9         7    90.57</span>
+<span class="co">#&gt;              Infant.Mortality</span>
+<span class="co">#&gt; Courtelary               22.2</span>
+<span class="co">#&gt; Delemont                 22.2</span>
+<span class="co">#&gt; Franches-Mnt             20.2</span>
+<span class="co">#&gt; Moutier                  20.3</span>
+<span class="co">#&gt; Neuveville               20.6</span>
+<span class="co">#&gt; Porrentruy               26.6</span></code></pre></div>
+<p>Ok, let’s say we want to several models. We are interested in <code>Fertility</code> and <code>Infant.Mortality</code> as outcomes and <code>Education</code> and <code>Agriculture</code> as potential predictors. We also want to control for <code>Catholic</code>. This setup means we have four potential models to analyze. With mason this is relatively easy. Analyses in mason are essentially separated into a blueprint phase and a construction phase. Since any structure or building always needs a blueprint, let’s get that started.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mason)
+<span class="kw">design</span>(swiss, <span class="st">'glm'</span>)
+<span class="co">#&gt;              Fertility Agriculture Examination Education Catholic</span>
+<span class="co">#&gt; Courtelary        80.2        17.0          15        12     9.96</span>
+<span class="co">#&gt; Delemont          83.1        45.1           6         9    84.84</span>
+<span class="co">#&gt; Franches-Mnt      92.5        39.7           5         5    93.40</span>
+<span class="co">#&gt; Moutier           85.8        36.5          12         7    33.77</span>
+<span class="co">#&gt; Neuveville        76.9        43.5          17        15     5.16</span>
+<span class="co">#&gt; Porrentruy        76.1        35.3           9         7    90.57</span>
+<span class="co">#&gt; Broye             83.8        70.2          16         7    92.85</span>
+<span class="co">#&gt; Glane             92.4        67.8          14         8    97.16</span>
+<span class="co">#&gt; Gruyere           82.4        53.3          12         7    97.67</span>
+<span class="co">#&gt; Sarine            82.9        45.2          16        13    91.38</span>
+<span class="co">#&gt; Veveyse           87.1        64.5          14         6    98.61</span>
+<span class="co">#&gt; Aigle             64.1        62.0          21        12     8.52</span>
+<span class="co">#&gt; Aubonne           66.9        67.5          14         7     2.27</span>
+<span class="co">#&gt; Avenches          68.9        60.7          19        12     4.43</span>
+<span class="co">#&gt; Cossonay          61.7        69.3          22         5     2.82</span>
+<span class="co">#&gt; Echallens         68.3        72.6          18         2    24.20</span>
+<span class="co">#&gt; Grandson          71.7        34.0          17         8     3.30</span>
+<span class="co">#&gt; Lausanne          55.7        19.4          26        28    12.11</span>
+<span class="co">#&gt; La Vallee         54.3        15.2          31        20     2.15</span>
+<span class="co">#&gt; Lavaux            65.1        73.0          19         9     2.84</span>
+<span class="co">#&gt; Morges            65.5        59.8          22        10     5.23</span>
+<span class="co">#&gt; Moudon            65.0        55.1          14         3     4.52</span>
+<span class="co">#&gt; Nyone             56.6        50.9          22        12    15.14</span>
+<span class="co">#&gt; Orbe              57.4        54.1          20         6     4.20</span>
+<span class="co">#&gt; Oron              72.5        71.2          12         1     2.40</span>
+<span class="co">#&gt; Payerne           74.2        58.1          14         8     5.23</span>
+<span class="co">#&gt; Paysd'enhaut      72.0        63.5           6         3     2.56</span>
+<span class="co">#&gt; Rolle             60.5        60.8          16        10     7.72</span>
+<span class="co">#&gt; Vevey             58.3        26.8          25        19    18.46</span>
+<span class="co">#&gt; Yverdon           65.4        49.5          15         8     6.10</span>
+<span class="co">#&gt; Conthey           75.5        85.9           3         2    99.71</span>
+<span class="co">#&gt; Entremont         69.3        84.9           7         6    99.68</span>
+<span class="co">#&gt; Herens            77.3        89.7           5         2   100.00</span>
+<span class="co">#&gt; Martigwy          70.5        78.2          12         6    98.96</span>
+<span class="co">#&gt; Monthey           79.4        64.9           7         3    98.22</span>
+<span class="co">#&gt; St Maurice        65.0        75.9           9         9    99.06</span>
+<span class="co">#&gt; Sierre            92.2        84.6           3         3    99.46</span>
+<span class="co">#&gt; Sion              79.3        63.1          13        13    96.83</span>
+<span class="co">#&gt; Boudry            70.4        38.4          26        12     5.62</span>
+<span class="co">#&gt; La Chauxdfnd      65.7         7.7          29        11    13.79</span>
+<span class="co">#&gt; Le Locle          72.7        16.7          22        13    11.22</span>
+<span class="co">#&gt; Neuchatel         64.4        17.6          35        32    16.92</span>
+<span class="co">#&gt; Val de Ruz        77.6        37.6          15         7     4.97</span>
+<span class="co">#&gt; ValdeTravers      67.6        18.7          25         7     8.65</span>
+<span class="co">#&gt; V. De Geneve      35.0         1.2          37        53    42.34</span>
+<span class="co">#&gt; Rive Droite       44.7        46.6          16        29    50.43</span>
+<span class="co">#&gt; Rive Gauche       42.8        27.7          22        29    58.33</span>
+<span class="co">#&gt;              Infant.Mortality</span>
+<span class="co">#&gt; Courtelary               22.2</span>
+<span class="co">#&gt; Delemont                 22.2</span>
+<span class="co">#&gt; Franches-Mnt             20.2</span>
+<span class="co">#&gt; Moutier                  20.3</span>
+<span class="co">#&gt; Neuveville               20.6</span>
+<span class="co">#&gt; Porrentruy               26.6</span>
+<span class="co">#&gt; Broye                    23.6</span>
+<span class="co">#&gt; Glane                    24.9</span>
+<span class="co">#&gt; Gruyere                  21.0</span>
+<span class="co">#&gt; Sarine                   24.4</span>
+<span class="co">#&gt; Veveyse                  24.5</span>
+<span class="co">#&gt; Aigle                    16.5</span>
+<span class="co">#&gt; Aubonne                  19.1</span>
+<span class="co">#&gt; Avenches                 22.7</span>
+<span class="co">#&gt; Cossonay                 18.7</span>
+<span class="co">#&gt; Echallens                21.2</span>
+<span class="co">#&gt; Grandson                 20.0</span>
+<span class="co">#&gt; Lausanne                 20.2</span>
+<span class="co">#&gt; La Vallee                10.8</span>
+<span class="co">#&gt; Lavaux                   20.0</span>
+<span class="co">#&gt; Morges                   18.0</span>
+<span class="co">#&gt; Moudon                   22.4</span>
+<span class="co">#&gt; Nyone                    16.7</span>
+<span class="co">#&gt; Orbe                     15.3</span>
+<span class="co">#&gt; Oron                     21.0</span>
+<span class="co">#&gt; Payerne                  23.8</span>
+<span class="co">#&gt; Paysd'enhaut             18.0</span>
+<span class="co">#&gt; Rolle                    16.3</span>
+<span class="co">#&gt; Vevey                    20.9</span>
+<span class="co">#&gt; Yverdon                  22.5</span>
+<span class="co">#&gt; Conthey                  15.1</span>
+<span class="co">#&gt; Entremont                19.8</span>
+<span class="co">#&gt; Herens                   18.3</span>
+<span class="co">#&gt; Martigwy                 19.4</span>
+<span class="co">#&gt; Monthey                  20.2</span>
+<span class="co">#&gt; St Maurice               17.8</span>
+<span class="co">#&gt; Sierre                   16.3</span>
+<span class="co">#&gt; Sion                     18.1</span>
+<span class="co">#&gt; Boudry                   20.3</span>
+<span class="co">#&gt; La Chauxdfnd             20.5</span>
+<span class="co">#&gt; Le Locle                 18.9</span>
+<span class="co">#&gt; Neuchatel                23.0</span>
+<span class="co">#&gt; Val de Ruz               20.0</span>
+<span class="co">#&gt; ValdeTravers             19.5</span>
+<span class="co">#&gt; V. De Geneve             18.0</span>
+<span class="co">#&gt; Rive Droite              18.2</span>
+<span class="co">#&gt; Rive Gauche              19.3</span></code></pre></div>
+<p>So far, all we’ve done is created a blueprint of the analysis, but it doesn’t contain much. Let’s add some settings to the blueprint. mason was designed to make use of the <code>%&gt;%</code> pipes from the package <code>magrittr</code> (also found in <code>dplyr</code>), so let’s load up <code>magrittr</code>!</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(magrittr)
+dp &lt;-<span class="st"> </span><span class="kw">design</span>(swiss, <span class="st">'glm'</span>) %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">add_settings</span>(<span class="dt">family =</span> <span class="kw">gaussian</span>())</code></pre></div>
+<p>You’ll notice that each time, the only thing that is printed to the console is the dataset. That’s because we haven’t constructed the analysis yet! We are still in the blueprint phase, so nothing new has been added! Since we have two outcomes and two predictors, we have a total of four models to analysis. Normally we would need to run each of the models separately. However, if simply list the outcomes and the predictors in mason, it will ‘loop’ through each combination and run all four models! Let’s add the variables.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dp &lt;-<span class="st"> </span>dp %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">add_variables</span>(<span class="st">'yvars'</span>, <span class="kw">c</span>(<span class="st">'Fertility'</span>, <span class="st">'Infant.Mortality'</span>)) %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">add_variables</span>(<span class="st">'xvars'</span>, <span class="kw">c</span>(<span class="st">'Education'</span>, <span class="st">'Agriculture'</span>))</code></pre></div>
+<p>Alright, still nothing has happened. However, we are now at the phase that we can construct the analysis using <code>construct()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dp &lt;-<span class="st"> </span><span class="kw">construct</span>(dp)
+dp
+<span class="co">#&gt;              Fertility Agriculture Examination Education Catholic</span>
+<span class="co">#&gt; Courtelary        80.2        17.0          15        12     9.96</span>
+<span class="co">#&gt; Delemont          83.1        45.1           6         9    84.84</span>
+<span class="co">#&gt; Franches-Mnt      92.5        39.7           5         5    93.40</span>
+<span class="co">#&gt; Moutier           85.8        36.5          12         7    33.77</span>
+<span class="co">#&gt; Neuveville        76.9        43.5          17        15     5.16</span>
+<span class="co">#&gt; Porrentruy        76.1        35.3           9         7    90.57</span>
+<span class="co">#&gt; Broye             83.8        70.2          16         7    92.85</span>
+<span class="co">#&gt; Glane             92.4        67.8          14         8    97.16</span>
+<span class="co">#&gt; Gruyere           82.4        53.3          12         7    97.67</span>
+<span class="co">#&gt; Sarine            82.9        45.2          16        13    91.38</span>
+<span class="co">#&gt; Veveyse           87.1        64.5          14         6    98.61</span>
+<span class="co">#&gt; Aigle             64.1        62.0          21        12     8.52</span>
+<span class="co">#&gt; Aubonne           66.9        67.5          14         7     2.27</span>
+<span class="co">#&gt; Avenches          68.9        60.7          19        12     4.43</span>
+<span class="co">#&gt; Cossonay          61.7        69.3          22         5     2.82</span>
+<span class="co">#&gt; Echallens         68.3        72.6          18         2    24.20</span>
+<span class="co">#&gt; Grandson          71.7        34.0          17         8     3.30</span>
+<span class="co">#&gt; Lausanne          55.7        19.4          26        28    12.11</span>
+<span class="co">#&gt; La Vallee         54.3        15.2          31        20     2.15</span>
+<span class="co">#&gt; Lavaux            65.1        73.0          19         9     2.84</span>
+<span class="co">#&gt; Morges            65.5        59.8          22        10     5.23</span>
+<span class="co">#&gt; Moudon            65.0        55.1          14         3     4.52</span>
+<span class="co">#&gt; Nyone             56.6        50.9          22        12    15.14</span>
+<span class="co">#&gt; Orbe              57.4        54.1          20         6     4.20</span>
+<span class="co">#&gt; Oron              72.5        71.2          12         1     2.40</span>
+<span class="co">#&gt; Payerne           74.2        58.1          14         8     5.23</span>
+<span class="co">#&gt; Paysd'enhaut      72.0        63.5           6         3     2.56</span>
+<span class="co">#&gt; Rolle             60.5        60.8          16        10     7.72</span>
+<span class="co">#&gt; Vevey             58.3        26.8          25        19    18.46</span>
+<span class="co">#&gt; Yverdon           65.4        49.5          15         8     6.10</span>
+<span class="co">#&gt; Conthey           75.5        85.9           3         2    99.71</span>
+<span class="co">#&gt; Entremont         69.3        84.9           7         6    99.68</span>
+<span class="co">#&gt; Herens            77.3        89.7           5         2   100.00</span>
+<span class="co">#&gt; Martigwy          70.5        78.2          12         6    98.96</span>
+<span class="co">#&gt; Monthey           79.4        64.9           7         3    98.22</span>
+<span class="co">#&gt; St Maurice        65.0        75.9           9         9    99.06</span>
+<span class="co">#&gt; Sierre            92.2        84.6           3         3    99.46</span>
+<span class="co">#&gt; Sion              79.3        63.1          13        13    96.83</span>
+<span class="co">#&gt; Boudry            70.4        38.4          26        12     5.62</span>
+<span class="co">#&gt; La Chauxdfnd      65.7         7.7          29        11    13.79</span>
+<span class="co">#&gt; Le Locle          72.7        16.7          22        13    11.22</span>
+<span class="co">#&gt; Neuchatel         64.4        17.6          35        32    16.92</span>
+<span class="co">#&gt; Val de Ruz        77.6        37.6          15         7     4.97</span>
+<span class="co">#&gt; ValdeTravers      67.6        18.7          25         7     8.65</span>
+<span class="co">#&gt; V. De Geneve      35.0         1.2          37        53    42.34</span>
+<span class="co">#&gt; Rive Droite       44.7        46.6          16        29    50.43</span>
+<span class="co">#&gt; Rive Gauche       42.8        27.7          22        29    58.33</span>
+<span class="co">#&gt;              Infant.Mortality</span>
+<span class="co">#&gt; Courtelary               22.2</span>
+<span class="co">#&gt; Delemont                 22.2</span>
+<span class="co">#&gt; Franches-Mnt             20.2</span>
+<span class="co">#&gt; Moutier                  20.3</span>
+<span class="co">#&gt; Neuveville               20.6</span>
+<span class="co">#&gt; Porrentruy               26.6</span>
+<span class="co">#&gt; Broye                    23.6</span>
+<span class="co">#&gt; Glane                    24.9</span>
+<span class="co">#&gt; Gruyere                  21.0</span>
+<span class="co">#&gt; Sarine                   24.4</span>
+<span class="co">#&gt; Veveyse                  24.5</span>
+<span class="co">#&gt; Aigle                    16.5</span>
+<span class="co">#&gt; Aubonne                  19.1</span>
+<span class="co">#&gt; Avenches                 22.7</span>
+<span class="co">#&gt; Cossonay                 18.7</span>
+<span class="co">#&gt; Echallens                21.2</span>
+<span class="co">#&gt; Grandson                 20.0</span>
+<span class="co">#&gt; Lausanne                 20.2</span>
+<span class="co">#&gt; La Vallee                10.8</span>
+<span class="co">#&gt; Lavaux                   20.0</span>
+<span class="co">#&gt; Morges                   18.0</span>
+<span class="co">#&gt; Moudon                   22.4</span>
+<span class="co">#&gt; Nyone                    16.7</span>
+<span class="co">#&gt; Orbe                     15.3</span>
+<span class="co">#&gt; Oron                     21.0</span>
+<span class="co">#&gt; Payerne                  23.8</span>
+<span class="co">#&gt; Paysd'enhaut             18.0</span>
+<span class="co">#&gt; Rolle                    16.3</span>
+<span class="co">#&gt; Vevey                    20.9</span>
+<span class="co">#&gt; Yverdon                  22.5</span>
+<span class="co">#&gt; Conthey                  15.1</span>
+<span class="co">#&gt; Entremont                19.8</span>
+<span class="co">#&gt; Herens                   18.3</span>
+<span class="co">#&gt; Martigwy                 19.4</span>
+<span class="co">#&gt; Monthey                  20.2</span>
+<span class="co">#&gt; St Maurice               17.8</span>
+<span class="co">#&gt; Sierre                   16.3</span>
+<span class="co">#&gt; Sion                     18.1</span>
+<span class="co">#&gt; Boudry                   20.3</span>
+<span class="co">#&gt; La Chauxdfnd             20.5</span>
+<span class="co">#&gt; Le Locle                 18.9</span>
+<span class="co">#&gt; Neuchatel                23.0</span>
+<span class="co">#&gt; Val de Ruz               20.0</span>
+<span class="co">#&gt; ValdeTravers             19.5</span>
+<span class="co">#&gt; V. De Geneve             18.0</span>
+<span class="co">#&gt; Rive Droite              18.2</span>
+<span class="co">#&gt; Rive Gauche              19.3</span></code></pre></div>
+<p>Cool! This is the unadjusted model, without any covariates. We said we wanted to adjust for <code>Catholic</code>. But let’s say we want to keep the unadjusted analysis too. Since we have ‘finished’ the analysis by cleaning it up, we can still add to the blueprint.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dp2 &lt;-<span class="st"> </span>dp %&gt;%
+<span class="st">    </span><span class="kw">add_variables</span>(<span class="st">'covariates'</span>, <span class="st">'Catholic'</span>) %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">construct</span>()
+<span class="kw">head</span>(dp2)
+<span class="co">#&gt;              Fertility Agriculture Examination Education Catholic</span>
+<span class="co">#&gt; Courtelary        80.2        17.0          15        12     9.96</span>
+<span class="co">#&gt; Delemont          83.1        45.1           6         9    84.84</span>
+<span class="co">#&gt; Franches-Mnt      92.5        39.7           5         5    93.40</span>
+<span class="co">#&gt; Moutier           85.8        36.5          12         7    33.77</span>
+<span class="co">#&gt; Neuveville        76.9        43.5          17        15     5.16</span>
+<span class="co">#&gt; Porrentruy        76.1        35.3           9         7    90.57</span>
+<span class="co">#&gt;              Infant.Mortality</span>
+<span class="co">#&gt; Courtelary               22.2</span>
+<span class="co">#&gt; Delemont                 22.2</span>
+<span class="co">#&gt; Franches-Mnt             20.2</span>
+<span class="co">#&gt; Moutier                  20.3</span>
+<span class="co">#&gt; Neuveville               20.6</span>
+<span class="co">#&gt; Porrentruy               26.6</span></code></pre></div>
+<p>We now have two models in the results. We’re happy with them, so let’s clean it up using the <code>scrub()</code> function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dp_clean &lt;-<span class="st"> </span>dp2 %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">scrub</span>()</code></pre></div>
+<p>All <code>scrub()</code> does is removes any extra specs in the attributes and sets the results as the main dataset. You can see this by looking at it’s details and comparing to the unscrubbed version.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colnames</span>(dp2)
+<span class="co">#&gt; [1] &quot;Fertility&quot;        &quot;Agriculture&quot;      &quot;Examination&quot;     </span>
+<span class="co">#&gt; [4] &quot;Education&quot;        &quot;Catholic&quot;         &quot;Infant.Mortality&quot;</span>
+<span class="kw">colnames</span>(dp_clean)
+<span class="co">#&gt;  [1] &quot;Yterms&quot;      &quot;Xterms&quot;      &quot;term&quot;        &quot;estimate&quot;    &quot;std.error&quot;  </span>
+<span class="co">#&gt;  [6] &quot;statistic&quot;   &quot;p.value&quot;     &quot;conf.low&quot;    &quot;conf.high&quot;   &quot;sample.size&quot;</span>
+<span class="kw">names</span>(<span class="kw">attributes</span>(dp2))
+<span class="co">#&gt; [1] &quot;names&quot;     &quot;class&quot;     &quot;row.names&quot; &quot;specs&quot;</span>
+<span class="kw">names</span>(<span class="kw">attributes</span>(dp_clean))
+<span class="co">#&gt; [1] &quot;names&quot;     &quot;class&quot;     &quot;row.names&quot;</span>
+<span class="kw">class</span>(dp2)
+<span class="co">#&gt; [1] &quot;glm_bp&quot;     &quot;bp&quot;         &quot;data.frame&quot;</span>
+<span class="kw">class</span>(dp_clean)
+<span class="co">#&gt; [1] &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;</span></code></pre></div>
+<p>And all as a single pipe chain:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">swiss %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">design</span>(<span class="st">'glm'</span>) %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">add_settings</span>() %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">add_variables</span>(<span class="st">'yvars'</span>, <span class="kw">c</span>(<span class="st">'Fertility'</span>, <span class="st">'Infant.Mortality'</span>)) %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">add_variables</span>(<span class="st">'xvars'</span>, <span class="kw">c</span>(<span class="st">'Education'</span>, <span class="st">'Agriculture'</span>)) %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">construct</span>() %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">add_variables</span>(<span class="st">'covariates'</span>, <span class="st">'Catholic'</span>) %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">construct</span>() %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">scrub</span>()
+<span class="co">#&gt; # A tibble: 20 x 10</span>
+<span class="co">#&gt;              Yterms      Xterms        term     estimate  std.error</span>
+<span class="co">#&gt;               &lt;chr&gt;       &lt;chr&gt;       &lt;chr&gt;        &lt;dbl&gt;      &lt;dbl&gt;</span>
+<span class="co">#&gt; 1         Fertility Agriculture (Intercept) 60.304375228 4.25125562</span>
+<span class="co">#&gt; 2         Fertility Agriculture     &lt;-Xterm  0.194201749 0.07671176</span>
+<span class="co">#&gt; 3         Fertility   Education (Intercept) 79.610058532 2.10409711</span>
+<span class="co">#&gt; 4         Fertility   Education     &lt;-Xterm -0.862350293 0.14484472</span>
+<span class="co">#&gt; 5  Infant.Mortality Agriculture (Intercept) 20.337954766 1.05754318</span>
+<span class="co">#&gt; 6  Infant.Mortality Agriculture     &lt;-Xterm -0.007805071 0.01908283</span>
+<span class="co">#&gt; 7  Infant.Mortality   Education (Intercept) 20.272865076 0.65272716</span>
+<span class="co">#&gt; 8  Infant.Mortality   Education     &lt;-Xterm -0.030086548 0.04493333</span>
+<span class="co">#&gt; 9         Fertility Agriculture (Intercept) 59.863923712 3.98753957</span>
+<span class="co">#&gt; 10        Fertility Agriculture     &lt;-Xterm  0.109528109 0.07848208</span>
+<span class="co">#&gt; 11        Fertility Agriculture    Catholic  0.114962125 0.04273900</span>
+<span class="co">#&gt; 12        Fertility   Education (Intercept) 74.233689201 2.35197061</span>
+<span class="co">#&gt; 13        Fertility   Education     &lt;-Xterm -0.788329259 0.12929324</span>
+<span class="co">#&gt; 14        Fertility   Education    Catholic  0.110920955 0.02980965</span>
+<span class="co">#&gt; 15 Infant.Mortality Agriculture (Intercept) 20.274208854 1.04449977</span>
+<span class="co">#&gt; 16 Infant.Mortality Agriculture     &lt;-Xterm -0.020059765 0.02055767</span>
+<span class="co">#&gt; 17 Infant.Mortality Agriculture    Catholic  0.016638302 0.01119509</span>
+<span class="co">#&gt; 18 Infant.Mortality   Education (Intercept) 19.717357317 0.82539716</span>
+<span class="co">#&gt; 19 Infant.Mortality   Education     &lt;-Xterm -0.022438401 0.04537398</span>
+<span class="co">#&gt; 20 Infant.Mortality   Education    Catholic  0.011460792 0.01046136</span>
+<span class="co">#&gt; # ... with 5 more variables: statistic &lt;dbl&gt;, p.value &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;, sample.size &lt;int&gt;</span></code></pre></div>
+<p>There are also additional <code>polish_*</code> type commands that are more or less simply wrappers around commands that you may do on the results dataset, like filtering or renaming. The list of polish commands can be found in <code>?mason::polish</code>.</p>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
