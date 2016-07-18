@@ -1,7 +1,7 @@
 Package: mason
 Type: Package
 Title: Build Data Structures for Common Statistical Analysis
-Version: 0.2.4
+Version: 0.2.5
 Authors@R: person("Luke", "Johnston", email = "lwjohnst@gmail.com",
     role = c("aut", "cre"))
 Description: Use a consistent syntax to create data structures of common
@@ -13,15 +13,15 @@ License: MIT + file LICENSE
 LazyData: TRUE
 Depends: R (>= 3.1.0)
 Imports: dplyr, tidyr, broom, assertive, magrittr, stats, utils,
-        lazyeval, MASS
+        lazyeval
 RoxygenNote: 5.0.1
-Suggests: knitr, geepack, rmarkdown, testthat
+Suggests: knitr, geepack, rmarkdown, testthat, MASS
 VignetteBuilder: knitr
 BugReports: https://github.com/lwjohnst86/mason/issues
 URL: https://github.com/lwjohnst86/mason
 NeedsCompilation: no
-Packaged: 2016-07-15 21:40:30 UTC; luke
+Packaged: 2016-07-18 03:38:43 UTC; luke
 Author: Luke Johnston [aut, cre]
 Maintainer: Luke Johnston <lwjohnst@gmail.com>
 Repository: CRAN
-Date/Publication: 2016-07-15 23:46:18
+Date/Publication: 2016-07-18 13:43:51

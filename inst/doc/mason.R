@@ -29,7 +29,7 @@ dp
 dp2 <- dp %>%
     add_variables('covariates', 'Catholic') %>% 
     construct()
-head(dp2)
+dp2
 
 ## ----scrub---------------------------------------------------------------
 dp_clean <- dp2 %>% 

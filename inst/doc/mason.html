@@ -12,7 +12,7 @@
 
 <meta name="author" content="Luke W. Johnston" />
 
-<meta name="date" content="2016-07-15" />
+<meta name="date" content="2016-07-17" />
 
 <title>Introduction to mason</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Introduction to mason</h1>
 <h4 class="author"><em>Luke W. Johnston</em></h4>
-<h4 class="date"><em>2016-07-15</em></h4>
+<h4 class="date"><em>2016-07-17</em></h4>
 
 
 
@@ -110,102 +110,18 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Ok, let’s say we want to several models. We are interested in <code>Fertility</code> and <code>Infant.Mortality</code> as outcomes and <code>Education</code> and <code>Agriculture</code> as potential predictors. We also want to control for <code>Catholic</code>. This setup means we have four potential models to analyze. With mason this is relatively easy. Analyses in mason are essentially separated into a blueprint phase and a construction phase. Since any structure or building always needs a blueprint, let’s get that started.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mason)
 <span class="kw">design</span>(swiss, <span class="st">'glm'</span>)
-<span class="co">#&gt;              Fertility Agriculture Examination Education Catholic</span>
-<span class="co">#&gt; Courtelary        80.2        17.0          15        12     9.96</span>
-<span class="co">#&gt; Delemont          83.1        45.1           6         9    84.84</span>
-<span class="co">#&gt; Franches-Mnt      92.5        39.7           5         5    93.40</span>
-<span class="co">#&gt; Moutier           85.8        36.5          12         7    33.77</span>
-<span class="co">#&gt; Neuveville        76.9        43.5          17        15     5.16</span>
-<span class="co">#&gt; Porrentruy        76.1        35.3           9         7    90.57</span>
-<span class="co">#&gt; Broye             83.8        70.2          16         7    92.85</span>
-<span class="co">#&gt; Glane             92.4        67.8          14         8    97.16</span>
-<span class="co">#&gt; Gruyere           82.4        53.3          12         7    97.67</span>
-<span class="co">#&gt; Sarine            82.9        45.2          16        13    91.38</span>
-<span class="co">#&gt; Veveyse           87.1        64.5          14         6    98.61</span>
-<span class="co">#&gt; Aigle             64.1        62.0          21        12     8.52</span>
-<span class="co">#&gt; Aubonne           66.9        67.5          14         7     2.27</span>
-<span class="co">#&gt; Avenches          68.9        60.7          19        12     4.43</span>
-<span class="co">#&gt; Cossonay          61.7        69.3          22         5     2.82</span>
-<span class="co">#&gt; Echallens         68.3        72.6          18         2    24.20</span>
-<span class="co">#&gt; Grandson          71.7        34.0          17         8     3.30</span>
-<span class="co">#&gt; Lausanne          55.7        19.4          26        28    12.11</span>
-<span class="co">#&gt; La Vallee         54.3        15.2          31        20     2.15</span>
-<span class="co">#&gt; Lavaux            65.1        73.0          19         9     2.84</span>
-<span class="co">#&gt; Morges            65.5        59.8          22        10     5.23</span>
-<span class="co">#&gt; Moudon            65.0        55.1          14         3     4.52</span>
-<span class="co">#&gt; Nyone             56.6        50.9          22        12    15.14</span>
-<span class="co">#&gt; Orbe              57.4        54.1          20         6     4.20</span>
-<span class="co">#&gt; Oron              72.5        71.2          12         1     2.40</span>
-<span class="co">#&gt; Payerne           74.2        58.1          14         8     5.23</span>
-<span class="co">#&gt; Paysd'enhaut      72.0        63.5           6         3     2.56</span>
-<span class="co">#&gt; Rolle             60.5        60.8          16        10     7.72</span>
-<span class="co">#&gt; Vevey             58.3        26.8          25        19    18.46</span>
-<span class="co">#&gt; Yverdon           65.4        49.5          15         8     6.10</span>
-<span class="co">#&gt; Conthey           75.5        85.9           3         2    99.71</span>
-<span class="co">#&gt; Entremont         69.3        84.9           7         6    99.68</span>
-<span class="co">#&gt; Herens            77.3        89.7           5         2   100.00</span>
-<span class="co">#&gt; Martigwy          70.5        78.2          12         6    98.96</span>
-<span class="co">#&gt; Monthey           79.4        64.9           7         3    98.22</span>
-<span class="co">#&gt; St Maurice        65.0        75.9           9         9    99.06</span>
-<span class="co">#&gt; Sierre            92.2        84.6           3         3    99.46</span>
-<span class="co">#&gt; Sion              79.3        63.1          13        13    96.83</span>
-<span class="co">#&gt; Boudry            70.4        38.4          26        12     5.62</span>
-<span class="co">#&gt; La Chauxdfnd      65.7         7.7          29        11    13.79</span>
-<span class="co">#&gt; Le Locle          72.7        16.7          22        13    11.22</span>
-<span class="co">#&gt; Neuchatel         64.4        17.6          35        32    16.92</span>
-<span class="co">#&gt; Val de Ruz        77.6        37.6          15         7     4.97</span>
-<span class="co">#&gt; ValdeTravers      67.6        18.7          25         7     8.65</span>
-<span class="co">#&gt; V. De Geneve      35.0         1.2          37        53    42.34</span>
-<span class="co">#&gt; Rive Droite       44.7        46.6          16        29    50.43</span>
-<span class="co">#&gt; Rive Gauche       42.8        27.7          22        29    58.33</span>
-<span class="co">#&gt;              Infant.Mortality</span>
-<span class="co">#&gt; Courtelary               22.2</span>
-<span class="co">#&gt; Delemont                 22.2</span>
-<span class="co">#&gt; Franches-Mnt             20.2</span>
-<span class="co">#&gt; Moutier                  20.3</span>
-<span class="co">#&gt; Neuveville               20.6</span>
-<span class="co">#&gt; Porrentruy               26.6</span>
-<span class="co">#&gt; Broye                    23.6</span>
-<span class="co">#&gt; Glane                    24.9</span>
-<span class="co">#&gt; Gruyere                  21.0</span>
-<span class="co">#&gt; Sarine                   24.4</span>
-<span class="co">#&gt; Veveyse                  24.5</span>
-<span class="co">#&gt; Aigle                    16.5</span>
-<span class="co">#&gt; Aubonne                  19.1</span>
-<span class="co">#&gt; Avenches                 22.7</span>
-<span class="co">#&gt; Cossonay                 18.7</span>
-<span class="co">#&gt; Echallens                21.2</span>
-<span class="co">#&gt; Grandson                 20.0</span>
-<span class="co">#&gt; Lausanne                 20.2</span>
-<span class="co">#&gt; La Vallee                10.8</span>
-<span class="co">#&gt; Lavaux                   20.0</span>
-<span class="co">#&gt; Morges                   18.0</span>
-<span class="co">#&gt; Moudon                   22.4</span>
-<span class="co">#&gt; Nyone                    16.7</span>
-<span class="co">#&gt; Orbe                     15.3</span>
-<span class="co">#&gt; Oron                     21.0</span>
-<span class="co">#&gt; Payerne                  23.8</span>
-<span class="co">#&gt; Paysd'enhaut             18.0</span>
-<span class="co">#&gt; Rolle                    16.3</span>
-<span class="co">#&gt; Vevey                    20.9</span>
-<span class="co">#&gt; Yverdon                  22.5</span>
-<span class="co">#&gt; Conthey                  15.1</span>
-<span class="co">#&gt; Entremont                19.8</span>
-<span class="co">#&gt; Herens                   18.3</span>
-<span class="co">#&gt; Martigwy                 19.4</span>
-<span class="co">#&gt; Monthey                  20.2</span>
-<span class="co">#&gt; St Maurice               17.8</span>
-<span class="co">#&gt; Sierre                   16.3</span>
-<span class="co">#&gt; Sion                     18.1</span>
-<span class="co">#&gt; Boudry                   20.3</span>
-<span class="co">#&gt; La Chauxdfnd             20.5</span>
-<span class="co">#&gt; Le Locle                 18.9</span>
-<span class="co">#&gt; Neuchatel                23.0</span>
-<span class="co">#&gt; Val de Ruz               20.0</span>
-<span class="co">#&gt; ValdeTravers             19.5</span>
-<span class="co">#&gt; V. De Geneve             18.0</span>
-<span class="co">#&gt; Rive Droite              18.2</span>
-<span class="co">#&gt; Rive Gauche              19.3</span></code></pre></div>
+<span class="co">#&gt; # Analysis for glm is still under construction. </span>
+<span class="co">#&gt; # Showing data right now:</span>
+<span class="co">#&gt; # A tibble: 47 x 6</span>
+<span class="co">#&gt;   Fertility Agriculture Examination Education Catholic Infant.Mortality</span>
+<span class="co">#&gt;       &lt;dbl&gt;       &lt;dbl&gt;       &lt;int&gt;     &lt;int&gt;    &lt;dbl&gt;            &lt;dbl&gt;</span>
+<span class="co">#&gt; 1      80.2        17.0          15        12     9.96             22.2</span>
+<span class="co">#&gt; 2      83.1        45.1           6         9    84.84             22.2</span>
+<span class="co">#&gt; 3      92.5        39.7           5         5    93.40             20.2</span>
+<span class="co">#&gt; 4      85.8        36.5          12         7    33.77             20.3</span>
+<span class="co">#&gt; 5      76.9        43.5          17        15     5.16             20.6</span>
+<span class="co">#&gt; 6      76.1        35.3           9         7    90.57             26.6</span>
+<span class="co">#&gt; # ... with 41 more rows</span></code></pre></div>
 <p>So far, all we’ve done is created a blueprint of the analysis, but it doesn’t contain much. Let’s add some settings to the blueprint. mason was designed to make use of the <code>%&gt;%</code> pipes from the package <code>magrittr</code> (also found in <code>dplyr</code>), so let’s load up <code>magrittr</code>!</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(magrittr)
 dp &lt;-<span class="st"> </span><span class="kw">design</span>(swiss, <span class="st">'glm'</span>) %&gt;%<span class="st"> </span>
@@ -217,121 +133,37 @@ dp &lt;-<span class="st"> </span><span class="kw">design</span>(swiss, <span cla
 <p>Alright, still nothing has happened. However, we are now at the phase that we can construct the analysis using <code>construct()</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dp &lt;-<span class="st"> </span><span class="kw">construct</span>(dp)
 dp
-<span class="co">#&gt;              Fertility Agriculture Examination Education Catholic</span>
-<span class="co">#&gt; Courtelary        80.2        17.0          15        12     9.96</span>
-<span class="co">#&gt; Delemont          83.1        45.1           6         9    84.84</span>
-<span class="co">#&gt; Franches-Mnt      92.5        39.7           5         5    93.40</span>
-<span class="co">#&gt; Moutier           85.8        36.5          12         7    33.77</span>
-<span class="co">#&gt; Neuveville        76.9        43.5          17        15     5.16</span>
-<span class="co">#&gt; Porrentruy        76.1        35.3           9         7    90.57</span>
-<span class="co">#&gt; Broye             83.8        70.2          16         7    92.85</span>
-<span class="co">#&gt; Glane             92.4        67.8          14         8    97.16</span>
-<span class="co">#&gt; Gruyere           82.4        53.3          12         7    97.67</span>
-<span class="co">#&gt; Sarine            82.9        45.2          16        13    91.38</span>
-<span class="co">#&gt; Veveyse           87.1        64.5          14         6    98.61</span>
-<span class="co">#&gt; Aigle             64.1        62.0          21        12     8.52</span>
-<span class="co">#&gt; Aubonne           66.9        67.5          14         7     2.27</span>
-<span class="co">#&gt; Avenches          68.9        60.7          19        12     4.43</span>
-<span class="co">#&gt; Cossonay          61.7        69.3          22         5     2.82</span>
-<span class="co">#&gt; Echallens         68.3        72.6          18         2    24.20</span>
-<span class="co">#&gt; Grandson          71.7        34.0          17         8     3.30</span>
-<span class="co">#&gt; Lausanne          55.7        19.4          26        28    12.11</span>
-<span class="co">#&gt; La Vallee         54.3        15.2          31        20     2.15</span>
-<span class="co">#&gt; Lavaux            65.1        73.0          19         9     2.84</span>
-<span class="co">#&gt; Morges            65.5        59.8          22        10     5.23</span>
-<span class="co">#&gt; Moudon            65.0        55.1          14         3     4.52</span>
-<span class="co">#&gt; Nyone             56.6        50.9          22        12    15.14</span>
-<span class="co">#&gt; Orbe              57.4        54.1          20         6     4.20</span>
-<span class="co">#&gt; Oron              72.5        71.2          12         1     2.40</span>
-<span class="co">#&gt; Payerne           74.2        58.1          14         8     5.23</span>
-<span class="co">#&gt; Paysd'enhaut      72.0        63.5           6         3     2.56</span>
-<span class="co">#&gt; Rolle             60.5        60.8          16        10     7.72</span>
-<span class="co">#&gt; Vevey             58.3        26.8          25        19    18.46</span>
-<span class="co">#&gt; Yverdon           65.4        49.5          15         8     6.10</span>
-<span class="co">#&gt; Conthey           75.5        85.9           3         2    99.71</span>
-<span class="co">#&gt; Entremont         69.3        84.9           7         6    99.68</span>
-<span class="co">#&gt; Herens            77.3        89.7           5         2   100.00</span>
-<span class="co">#&gt; Martigwy          70.5        78.2          12         6    98.96</span>
-<span class="co">#&gt; Monthey           79.4        64.9           7         3    98.22</span>
-<span class="co">#&gt; St Maurice        65.0        75.9           9         9    99.06</span>
-<span class="co">#&gt; Sierre            92.2        84.6           3         3    99.46</span>
-<span class="co">#&gt; Sion              79.3        63.1          13        13    96.83</span>
-<span class="co">#&gt; Boudry            70.4        38.4          26        12     5.62</span>
-<span class="co">#&gt; La Chauxdfnd      65.7         7.7          29        11    13.79</span>
-<span class="co">#&gt; Le Locle          72.7        16.7          22        13    11.22</span>
-<span class="co">#&gt; Neuchatel         64.4        17.6          35        32    16.92</span>
-<span class="co">#&gt; Val de Ruz        77.6        37.6          15         7     4.97</span>
-<span class="co">#&gt; ValdeTravers      67.6        18.7          25         7     8.65</span>
-<span class="co">#&gt; V. De Geneve      35.0         1.2          37        53    42.34</span>
-<span class="co">#&gt; Rive Droite       44.7        46.6          16        29    50.43</span>
-<span class="co">#&gt; Rive Gauche       42.8        27.7          22        29    58.33</span>
-<span class="co">#&gt;              Infant.Mortality</span>
-<span class="co">#&gt; Courtelary               22.2</span>
-<span class="co">#&gt; Delemont                 22.2</span>
-<span class="co">#&gt; Franches-Mnt             20.2</span>
-<span class="co">#&gt; Moutier                  20.3</span>
-<span class="co">#&gt; Neuveville               20.6</span>
-<span class="co">#&gt; Porrentruy               26.6</span>
-<span class="co">#&gt; Broye                    23.6</span>
-<span class="co">#&gt; Glane                    24.9</span>
-<span class="co">#&gt; Gruyere                  21.0</span>
-<span class="co">#&gt; Sarine                   24.4</span>
-<span class="co">#&gt; Veveyse                  24.5</span>
-<span class="co">#&gt; Aigle                    16.5</span>
-<span class="co">#&gt; Aubonne                  19.1</span>
-<span class="co">#&gt; Avenches                 22.7</span>
-<span class="co">#&gt; Cossonay                 18.7</span>
-<span class="co">#&gt; Echallens                21.2</span>
-<span class="co">#&gt; Grandson                 20.0</span>
-<span class="co">#&gt; Lausanne                 20.2</span>
-<span class="co">#&gt; La Vallee                10.8</span>
-<span class="co">#&gt; Lavaux                   20.0</span>
-<span class="co">#&gt; Morges                   18.0</span>
-<span class="co">#&gt; Moudon                   22.4</span>
-<span class="co">#&gt; Nyone                    16.7</span>
-<span class="co">#&gt; Orbe                     15.3</span>
-<span class="co">#&gt; Oron                     21.0</span>
-<span class="co">#&gt; Payerne                  23.8</span>
-<span class="co">#&gt; Paysd'enhaut             18.0</span>
-<span class="co">#&gt; Rolle                    16.3</span>
-<span class="co">#&gt; Vevey                    20.9</span>
-<span class="co">#&gt; Yverdon                  22.5</span>
-<span class="co">#&gt; Conthey                  15.1</span>
-<span class="co">#&gt; Entremont                19.8</span>
-<span class="co">#&gt; Herens                   18.3</span>
-<span class="co">#&gt; Martigwy                 19.4</span>
-<span class="co">#&gt; Monthey                  20.2</span>
-<span class="co">#&gt; St Maurice               17.8</span>
-<span class="co">#&gt; Sierre                   16.3</span>
-<span class="co">#&gt; Sion                     18.1</span>
-<span class="co">#&gt; Boudry                   20.3</span>
-<span class="co">#&gt; La Chauxdfnd             20.5</span>
-<span class="co">#&gt; Le Locle                 18.9</span>
-<span class="co">#&gt; Neuchatel                23.0</span>
-<span class="co">#&gt; Val de Ruz               20.0</span>
-<span class="co">#&gt; ValdeTravers             19.5</span>
-<span class="co">#&gt; V. De Geneve             18.0</span>
-<span class="co">#&gt; Rive Droite              18.2</span>
-<span class="co">#&gt; Rive Gauche              19.3</span></code></pre></div>
+<span class="co">#&gt; # Analysis for glm constructed but has not been scrubbed. </span>
+<span class="co">#&gt; # Here is a peek at the results:</span>
+<span class="co">#&gt; # A tibble: 8 x 10</span>
+<span class="co">#&gt;             Yterms      Xterms        term     estimate  std.error</span>
+<span class="co">#&gt;              &lt;chr&gt;       &lt;chr&gt;       &lt;chr&gt;        &lt;dbl&gt;      &lt;dbl&gt;</span>
+<span class="co">#&gt; 1        Fertility Agriculture (Intercept) 60.304375228 4.25125562</span>
+<span class="co">#&gt; 2        Fertility Agriculture XtermValues  0.194201749 0.07671176</span>
+<span class="co">#&gt; 3        Fertility   Education (Intercept) 79.610058532 2.10409711</span>
+<span class="co">#&gt; 4        Fertility   Education XtermValues -0.862350293 0.14484472</span>
+<span class="co">#&gt; 5 Infant.Mortality Agriculture (Intercept) 20.337954766 1.05754318</span>
+<span class="co">#&gt; 6 Infant.Mortality Agriculture XtermValues -0.007805071 0.01908283</span>
+<span class="co">#&gt; # ... with 2 more rows, and 5 more variables: statistic &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;, sample.size &lt;int&gt;</span></code></pre></div>
 <p>Cool! This is the unadjusted model, without any covariates. We said we wanted to adjust for <code>Catholic</code>. But let’s say we want to keep the unadjusted analysis too. Since we have ‘finished’ the analysis by cleaning it up, we can still add to the blueprint.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dp2 &lt;-<span class="st"> </span>dp %&gt;%
 <span class="st">    </span><span class="kw">add_variables</span>(<span class="st">'covariates'</span>, <span class="st">'Catholic'</span>) %&gt;%<span class="st"> </span>
 <span class="st">    </span><span class="kw">construct</span>()
-<span class="kw">head</span>(dp2)
-<span class="co">#&gt;              Fertility Agriculture Examination Education Catholic</span>
-<span class="co">#&gt; Courtelary        80.2        17.0          15        12     9.96</span>
-<span class="co">#&gt; Delemont          83.1        45.1           6         9    84.84</span>
-<span class="co">#&gt; Franches-Mnt      92.5        39.7           5         5    93.40</span>
-<span class="co">#&gt; Moutier           85.8        36.5          12         7    33.77</span>
-<span class="co">#&gt; Neuveville        76.9        43.5          17        15     5.16</span>
-<span class="co">#&gt; Porrentruy        76.1        35.3           9         7    90.57</span>
-<span class="co">#&gt;              Infant.Mortality</span>
-<span class="co">#&gt; Courtelary               22.2</span>
-<span class="co">#&gt; Delemont                 22.2</span>
-<span class="co">#&gt; Franches-Mnt             20.2</span>
-<span class="co">#&gt; Moutier                  20.3</span>
-<span class="co">#&gt; Neuveville               20.6</span>
-<span class="co">#&gt; Porrentruy               26.6</span></code></pre></div>
+dp2
+<span class="co">#&gt; # Analysis for glm constructed but has not been scrubbed. </span>
+<span class="co">#&gt; # Here is a peek at the results:</span>
+<span class="co">#&gt; # A tibble: 20 x 10</span>
+<span class="co">#&gt;             Yterms      Xterms        term     estimate  std.error</span>
+<span class="co">#&gt;              &lt;chr&gt;       &lt;chr&gt;       &lt;chr&gt;        &lt;dbl&gt;      &lt;dbl&gt;</span>
+<span class="co">#&gt; 1        Fertility Agriculture (Intercept) 60.304375228 4.25125562</span>
+<span class="co">#&gt; 2        Fertility Agriculture XtermValues  0.194201749 0.07671176</span>
+<span class="co">#&gt; 3        Fertility   Education (Intercept) 79.610058532 2.10409711</span>
+<span class="co">#&gt; 4        Fertility   Education XtermValues -0.862350293 0.14484472</span>
+<span class="co">#&gt; 5 Infant.Mortality Agriculture (Intercept) 20.337954766 1.05754318</span>
+<span class="co">#&gt; 6 Infant.Mortality Agriculture XtermValues -0.007805071 0.01908283</span>
+<span class="co">#&gt; # ... with 14 more rows, and 5 more variables: statistic &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;, sample.size &lt;int&gt;</span></code></pre></div>
 <p>We now have two models in the results. We’re happy with them, so let’s clean it up using the <code>scrub()</code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dp_clean &lt;-<span class="st"> </span>dp2 %&gt;%<span class="st"> </span>
 <span class="st">    </span><span class="kw">scrub</span>()</code></pre></div>
@@ -347,7 +179,7 @@ dp
 <span class="kw">names</span>(<span class="kw">attributes</span>(dp_clean))
 <span class="co">#&gt; [1] &quot;names&quot;     &quot;class&quot;     &quot;row.names&quot;</span>
 <span class="kw">class</span>(dp2)
-<span class="co">#&gt; [1] &quot;glm_bp&quot;     &quot;bp&quot;         &quot;data.frame&quot;</span>
+<span class="co">#&gt; [1] &quot;bp&quot;         &quot;glm_bp&quot;     &quot;data.frame&quot;</span>
 <span class="kw">class</span>(dp_clean)
 <span class="co">#&gt; [1] &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;</span></code></pre></div>
 <p>And all as a single pipe chain:</p>
