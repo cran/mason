@@ -1,4 +1,4 @@
-context("GLM output")
+context("GLM output for gaussian family")
 
 # construct ---------------------------------------------------------------
 
@@ -6,10 +6,10 @@ ds <- design(testdata, 'glm')
 ds <- add_settings(ds)
 test_that("(for glm) construct needs yvar or xvar", {
     ds_wrong <- add_variables(ds, 'xvars', c('Population', 'Murder'))
-    expect_error(contruct(ds_wrong))
+    expect_error(construct(ds_wrong))
 
     ds_wrong <- add_variables(ds, 'yvars', c('Population', 'Murder'))
-    expect_error(contruct(ds_wrong))
+    expect_error(construct(ds_wrong))
 })
 
 test_that("(for glm) construct variables the same in yvar and xvar", {

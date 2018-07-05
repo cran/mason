@@ -3,7 +3,6 @@
 S3method(add_settings,cor_bp)
 S3method(add_settings,gee_bp)
 S3method(add_settings,glm_bp)
-S3method(add_settings,pls_bp)
 S3method(add_settings,t.test_bp)
 S3method(add_variables,default)
 S3method(construct,cor_bp)

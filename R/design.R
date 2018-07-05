@@ -3,7 +3,7 @@
 #'
 #' Sets up the initial design (i.e. the blueprint) of a statistical analysis to
 #' use on the data. As in creating a building or structure, a blueprint is first
-#' needed to guide the construction. This function \emph{only} creates that
+#' needed to guide the construction. This function *only* creates that
 #' blueprint, but does not do any construction (e.g. actually running statistics).
 #'
 #' @param data The dataset you want to analyze
@@ -21,9 +21,8 @@
 #' design(iris, 't.test')
 #'
 design <- function(data,
-                   statistic = c('gee', 'cor', 'glm', 'pls',
-                                 'plsda', 't.test')) {
-    assertive::assert_is_data.frame(data)
+                   statistic = c('gee', 'cor', 'glm', 't.test')) {
+    stopifnot(is.data.frame(data))
     type <- match.arg(statistic)
     make_blueprint(
         data = data,

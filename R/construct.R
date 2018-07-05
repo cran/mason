@@ -82,7 +82,7 @@ construct.gee_bp <- function(data, na.rm = TRUE, ...) {
         )
     }
     form <- regression_formula(specs)
-    tool <- lazyeval::interp("f(., specs = specs, form = form)",
+    tool <- lazyeval::interp(~f(., specs = specs, form = form),
                                           f = f,
                                           specs = specs,
                                           form = form)
@@ -107,7 +107,7 @@ construct.glm_bp <- function(data, na.rm = TRUE, ...) {
                    sample.size = nrow(mod$model))
     }
     form <- regression_formula(specs)
-    tool <- lazyeval::interp("f(., specs = specs, form = form)",
+    tool <- lazyeval::interp(~f(., specs = specs, form = form),
                                           f = f,
                                           specs = specs,
                                           form = form)
@@ -144,9 +144,7 @@ construct.cor_bp <- function(data, ...) {
     if (is.null(specs$vars$yvar))
         results[upper.tri(results)] <- NA
 
-    results <- broom::tidy(results) %>%
-        dplyr::rename_('Variables' = '.rownames') %>%
-        dplyr::tbl_df()
+    results <- dplyr::as_tibble(results, rownames = "Variables")
 
     type <- grep('bp', class(data), value = TRUE)
     output <- append_results(data, specs, results, type)
@@ -164,15 +162,41 @@ construct.t.test_bp <- function(data, na.rm = TRUE, ...) {
         broom::tidy(stats::t.test(data$YtermValues, data$XtermValues,
                                   paired = specs$paired))
     }
-    tool <- lazyeval::interp("f(., specs = specs)",
+    tool <- lazyeval::interp(~f(., specs = specs),
                              f = f,
                              specs = specs)
 
     construction_base(data = data, specs = specs, tool = tool, na.rm = na.rm)
 }
 
-    # data.prep <- data
-    # Y <- as.matrix(dplyr::select(data.prep, -matches('^pct_tg\\d+')))
-    # X <- as.matrix(dplyr::select(data.prep, matches('^pct_tg\\d+')))
-    # fit <- pls::plsr(Y ~ X, scale = TRUE, ncomp = 2)
-    # return(fit)
+construct.pls_bp <- function(data, ...) {
+
+    if (!requireNamespace('pls'))
+        stop('pls is needed for this analysis, please install it',
+             call. = FALSE)
+
+    specs <- attributes(data)$specs
+    specs_integrity(data, specs, stat = 'pls')
+
+    if (!is.null(specs$cv.index)) {
+        d <- data[specs$cv.index,]
+        test <- data[-specs$cv.index,]
+    } else if (is.null(specs$cv.index)) {
+        d <- data
+        test <- NULL
+    }
+
+    if (is.null(specs$ncomp))
+        specs$ncomp <- length(specs$vars$xvars)
+
+    Y <- as.matrix(d[, specs$vars$yvars])
+    X <- as.matrix(d[, specs$vars$xvars])
+    results <- pls::plsr(Y ~ X, scale = specs$scale, ncomp = specs$ncomp)
+
+    if (!is.null(test))
+        results$test_data <- test
+
+    type <- grep('bp', class(data), value = TRUE)
+    output <- make_blueprint(data, results = results, type = type)
+    return(output)
+}

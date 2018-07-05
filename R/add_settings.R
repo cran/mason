@@ -29,7 +29,7 @@ add_settings <-
 
 #' @rdname add_settings
 #' @param cluster.id Variable that represents the cluster for GEE.
-#' @param corstr The correlation structure. See \code{\link[geepack]{geeglm}}.
+#' @param corstr The correlation structure. See [geepack::geeglm()].
 #' @inheritParams stats::glm
 #' @inheritParams broom::tidy.geeglm
 #' @export
@@ -65,7 +65,7 @@ add_settings.gee_bp <-
 
 #' @rdname add_settings
 #' @param hclust.order Whether to order the correlation data based on the
-#'   \code{\link[stats]{hclust}} algorithm.
+#'   [stats::hclust()] algorithm.
 #' @inheritParams stats::cor
 #' @export
 add_settings.cor_bp <-
@@ -100,21 +100,43 @@ add_settings.glm_bp <-
             if (class(family) != 'family')
                 stop('Please use a family function (e.g. gaussian()).')
         }
-        make_blueprint(data,
+        make_blueprint(
+            data,
             family = family,
             conf.int = conf.int,
             conf.level = conf.level
         )
     }
 
-#' @export
+#' @rdname add_settings
+#' @inheritParams pls::plsr
+#' @param cv.data Whether to cross-validate the dataset into training and
+#'   testing sets.
+#' @param cv.seed Seed to set for cv.data.
 add_settings.pls_bp <-
     function(data,
-             ncomp,
+             ncomp = NULL,
              scale = TRUE,
              validation = c('none', 'CV', 'LOO'),
+             cv.data = TRUE,
+             cv.seed = 1234,
              ...) {
 
+        set.seed(cv.seed)
+        n_rows <- nrow(data)
+        if (cv.data) {
+            cv_index <- sample(1:n_rows, size = floor(0.50 * n_rows))
+        } else {
+            cv_index <- NULL
+        }
+
+        make_blueprint(
+            data,
+            ncomp = ncomp,
+            scale = scale,
+            val = validation,
+            cv.index = cv_index
+            )
     }
 
 #' @rdname add_settings
