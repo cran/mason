@@ -11,20 +11,36 @@
 \usage{
 add_settings(data, ...)
 
-\method{add_settings}{gee_bp}(data, cluster.id, family,
-  corstr = c("independence", "exchangeable", "ar1"), conf.int = TRUE,
-  conf.level = 0.95, ...)
+\method{add_settings}{gee_bp}(
+  data,
+  cluster.id,
+  family,
+  corstr = c("independence", "exchangeable", "ar1"),
+  conf.int = TRUE,
+  conf.level = 0.95,
+  ...
+)
 
-\method{add_settings}{cor_bp}(data, method = c("pearson", "kendall",
-  "spearman"), use = c("complete.obs", "all.obs", "pairwise.complete.obs",
-  "everything", "na.or.complete"), hclust.order = FALSE, ...)
+\method{add_settings}{cor_bp}(
+  data,
+  method = c("pearson", "kendall", "spearman"),
+  use = c("complete.obs", "all.obs", "pairwise.complete.obs", "everything",
+    "na.or.complete"),
+  hclust.order = FALSE,
+  ...
+)
 
-\method{add_settings}{glm_bp}(data, family, conf.int = TRUE,
-  conf.level = 0.95, ...)
+\method{add_settings}{glm_bp}(data, family, conf.int = TRUE, conf.level = 0.95, ...)
 
-\method{add_settings}{pls_bp}(data, ncomp = NULL, scale = TRUE,
-  validation = c("none", "CV", "LOO"), cv.data = TRUE, cv.seed = 1234,
-  ...)
+\method{add_settings}{pls_bp}(
+  data,
+  ncomp = NULL,
+  scale = TRUE,
+  validation = c("none", "CV", "LOO"),
+  cv.data = TRUE,
+  cv.seed = 1234,
+  ...
+)
 
 \method{add_settings}{t.test_bp}(data, paired = FALSE, ...)
 }
@@ -39,15 +55,17 @@ add_settings(data, ...)
     function to be used in the model.  For \code{glm} this can be a
     character string naming a family function, a family function or the
     result of a call to a family function.  For \code{glm.fit} only the
-    third option is supported.  (See \code{\link{family}} for details of
+    third option is supported.  (See \code{\link[stats]{family}} for details of
     family functions.)}
 
 \item{corstr}{The correlation structure. See \code{\link[geepack:geeglm]{geepack::geeglm()}}.}
 
-\item{conf.int}{whether to include a confidence interval}
+\item{conf.int}{Logical indicating whether or not to include a confidence
+interval in the tidied output. Defaults to \code{FALSE}.}
 
-\item{conf.level}{confidence level of the interval, used only if
-\code{conf.int=TRUE}}
+\item{conf.level}{The confidence level to use for the confidence interval
+if \code{conf.int = TRUE}. Must be strictly greater than 0 and less than 1.
+Defaults to 0.95, which corresponds to a 95 percent confidence interval.}
 
 \item{method}{the method to be used in fitting the model.  The default
     method \code{"glm.fit"} uses iteratively reweighted least squares
@@ -99,6 +117,7 @@ method is used at the construction phase.
 }
 \examples{
 
+\dontrun{
 design(iris, 'gee') \%>\%
  add_settings('Species', family = binomial('logit'), conf.int = FALSE)
 
@@ -108,5 +127,6 @@ ds <- add_settings(ds, method = 'spearman')
 ds <- design(iris, 't.test')
 add_settings(ds, paired = TRUE)
 add_settings(ds)
+}
 
 }

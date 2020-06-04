@@ -15,14 +15,13 @@ construct(data, ..., na.rm = TRUE)
 }
 \value{
 Uses the blueprint to construct the results of the statistical
-analysis.
+analysis. Outputs a \link[tibble:tibble-package]{tibble}.
 }
 \description{
 Construct the results of the analysis
 }
 \examples{
 
-library(magrittr)
 design(iris, 'cor') \%>\%
  add_settings() \%>\%
  add_variables('xvars', c('Sepal.Length', 'Sepal.Width')) \%>\%
@@ -42,6 +41,12 @@ design(iris, 'glm') \%>\%
 
 design(iris, 'gee') \%>\%
  add_settings('Species') \%>\%
+ add_variables('yvars', c('Sepal.Length', 'Sepal.Width')) \%>\%
+ add_variables('xvars', c('Petal.Length', 'Petal.Width')) \%>\%
+ construct()
+
+design(iris, 'pls') \%>\%
+ add_settings() \%>\%
  add_variables('yvars', c('Sepal.Length', 'Sepal.Width')) \%>\%
  add_variables('xvars', c('Petal.Length', 'Petal.Width')) \%>\%
  construct()

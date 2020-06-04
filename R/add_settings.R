@@ -12,6 +12,7 @@
 #'
 #' @examples
 #'
+#' \dontrun{
 #' design(iris, 'gee') %>%
 #'  add_settings('Species', family = binomial('logit'), conf.int = FALSE)
 #'
@@ -21,6 +22,7 @@
 #' ds <- design(iris, 't.test')
 #' add_settings(ds, paired = TRUE)
 #' add_settings(ds)
+#' }
 #'
 add_settings <-
     function(data, ...) {
@@ -113,6 +115,7 @@ add_settings.glm_bp <-
 #' @param cv.data Whether to cross-validate the dataset into training and
 #'   testing sets.
 #' @param cv.seed Seed to set for cv.data.
+#' @export
 add_settings.pls_bp <-
     function(data,
              ncomp = NULL,
